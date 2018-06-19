@@ -18,3 +18,4 @@ static
 .coverage
 htmlcov
 /apps/hello/fixtures/superuser_data.json
+!/apps/hello/fixtures/superuser_data.json
