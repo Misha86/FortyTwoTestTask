@@ -1,6 +1,7 @@
 from django.test import TestCase, Client
 from django.core.urlresolvers import reverse
 from apps.hello.models import Person, Contacts
+from django.contrib.auth.models import User
 
 # Create your tests here.
 
@@ -43,3 +44,15 @@ class ContactsModelTests(TestCase):
         self.assertEqual(str(self.person.contacts),
                          "Contacts for {}".format(self.person.name))
         self.assertEqual(str(self.person), self.person.name)
+
+
+class SuperuserTest(TestCase):
+    fixtures = ['superuser_data.json']
+
+    def setUp(self):
+        self.user = User.objects.get(id=1)
+
+    def test_super_user(self):
+        """Check superuser"""
+        self.assertTrue(self.user.is_superuser)
+        self.assertEqual(self.user.username, 'admin')
