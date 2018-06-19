@@ -15,3 +15,6 @@ media
 static
 *.dat
 .env
+.coverage
+htmlcov
+/apps/hello/fixtures/superuser_data.json

@@ -1,19 +1,20 @@
-from django.test import TestCase, RequestFactory
+from django.test import TestCase, Client
 from django.core.urlresolvers import reverse
-from apps.hello.views import contacts
+from apps.hello.models import Person, Contacts
 
 # Create your tests here.
 
 
 class ContactsViewTests(TestCase):
+    fixtures = ['person_data.json']
+
     def setUp(self):
         """ Every test needs a client"""
-        self.factory = RequestFactory()
+        self.client = Client()
 
     def test_start_page_view(self):
         """Issue a GET request"""
-        request = self.factory.get(reverse('contacts'))
-        response = contacts(request)
+        response = self.client.get(reverse('contacts'))
 
         """Check that the response is 200 OK"""
         self.assertEqual(response.status_code, 200)
@@ -22,14 +23,23 @@ class ContactsViewTests(TestCase):
 class ContactsModelTests(TestCase):
     def setUp(self):
         """ Create person for test"""
-        Person(name = "Misha", last_name = "Polishchuk", date_of_birth='1986-09-17', bio='I live in Rivne')
-        Contacts(person=self.person, email='misha86@ukr.net', jabber='misha86',
-                                 skype='mp_user', other_contacts='phone number: +38977478910')
+        person = Person.objects.create(name="Misha", last_name="Polishchuk",
+                                       date_of_birth='1986-09-17',
+                                       bio='I live in Rivne')
+        Contacts.objects.create(person=person, email='misha86@ukr.net',
+                                jabber='misha86', skype='mp_user',
+                                other_contacts='phone number: +38977478910')
+        self.person = Person.objects.get(name="Misha")
 
     def test_modes(self):
-        """Issue a GET request"""
-        lion = Person.objects.get(name="Misha")
-
         """Check that the person was created"""
-        self.assertEqual(lion.last_name, 'Polishchuk')
-        self.assertEqual(lion.contacts.skype, 'mp_user')
+        self.assertEqual(self.person.last_name, 'Polishchuk')
+        self.assertEqual(self.person.contacts.skype, 'mp_user')
+
+    def test_str(self):
+        """
+        Method `__str__` should be equal to field `name`
+        """
+        self.assertEqual(str(self.person.contacts),
+                         "Contacts for {}".format(self.person.name))
+        self.assertEqual(str(self.person), self.person.name)

@@ -1,0 +1,23 @@
+[
+{
+  "pk": 1, 
+  "model": "hello.person", 
+  "fields": {
+    "date_of_birth": "1986-09-17", 
+    "last_name": "Polishchuk", 
+    "name": "Misha", 
+    "bio": "I live in Rivne"
+  }
+},
+{
+  "pk": 1, 
+  "model": "hello.contacts", 
+  "fields": {
+    "person": 1, 
+    "other_contacts": "phone number: +38977478910", 
+    "jabber": "misha86", 
+    "email": "misha86@ukr.net", 
+    "skype": "mp_user"
+  }
+}
+]
