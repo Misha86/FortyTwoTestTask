@@ -10,6 +10,7 @@ class Migration(DataMigration):
         "Write your forwards methods here."
         from django.core.management import call_command
         call_command("loaddata", "person_data.json")
+        call_command("loaddata", "superuser_data.json")
 
     def backwards(self, orm):
         "Write your backwards methods here."
