@@ -1,4 +1,6 @@
-from django.test import TestCase, Client
+from django.test import TestCase, RequestFactory
+from django.core.urlresolvers import reverse
+from apps.hello.views import contacts
 
 # Create your tests here.
 
@@ -6,19 +8,12 @@ from django.test import TestCase, Client
 class ContactsViewTests(TestCase):
     def setUp(self):
         """ Every test needs a client"""
-        self.client = Client()
+        self.factory = RequestFactory()
 
     def test_start_page_view(self):
         """Issue a GET request"""
-        response = self.client.get('/')
+        request = self.factory.get(reverse('contacts'))
+        response = contacts(request)
 
         """Check that the response is 200 OK"""
         self.assertEqual(response.status_code, 200)
-
-        """Check that the response template"""
-        self.assertEqual(response.template_name, ['contacts.html', ])
-
-        """Check that the response function`s name is 'contacts'"""
-        self.assertEqual(response.get.im_func.func_name, 'contacts')
-
-
