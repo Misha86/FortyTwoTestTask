@@ -56,3 +56,16 @@ class SuperuserTest(TestCase):
         """Check superuser"""
         self.assertTrue(self.user.is_superuser)
         self.assertEqual(self.user.username, 'admin')
+
+
+class MakefileTest(TestCase):
+
+    def test_makefile(self):
+        """Check Makefile that it has commands for testing project"""
+        with open('Makefile', 'r') as m:
+            file = m.read()
+            self.assertIn("$(MANAGE) test", file)
+            self.assertIn("flake8 --exclude '*migrations*,"
+                          "fortytwo_test_task/settings/__init__.py' "
+                          "\\\n\t\t--max-complexity=6 apps fortytwo_test_task",
+                          file)
